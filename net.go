@@ -1,10 +1,15 @@
 package sox
 
 import (
+	"bytes"
 	"errors"
 	"net"
 	"strconv"
 )
+
+type requestBuilder struct {
+	bytes.Buffer
+}
 
 func splitHostPort(addr string) (host string, port uint16, err error) {
 	host, portStr, err := net.SplitHostPort(addr)
