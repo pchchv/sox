@@ -1,4 +1,4 @@
-# sox # work [![Go Reference](https://pkg.go.dev/badge/github.com/pchchv/sox.svg)](https://pkg.go.dev/github.com/pchchv/sox)
+# sox [![Go Reference](https://pkg.go.dev/badge/github.com/pchchv/sox.svg)](https://pkg.go.dev/github.com/pchchv/sox)
 A Go SOCKS (SOCKS4, SOCKS4A and SOCKS5) proxy package
 
 The package provides `socks.Dial`, which returns a TCP dial function from a socks proxy connection string.
