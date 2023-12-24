@@ -37,6 +37,13 @@ func Dial(proxyURI string) func(string, string) (net.Conn, error) {
 	return cfg.dialFunc()
 }
 
+// DialSocksProxy returns the dial function to be used in http.Transport object.
+// Argument socksType should be one of SOCKS4, SOCKS4A and SOCKS5.
+// Argument proxy should be in this format "127.0.0.1:1080".
+func DialSocksProxy(socksType int, proxy string) func(string, string) (net.Conn, error) {
+	return (&config{Proto: socksType, Host: proxy}).dialFunc()
+}
+
 func dialError(err error) func(string, string) (net.Conn, error) {
 	return func(_, _ string) (net.Conn, error) {
 		return nil, err
