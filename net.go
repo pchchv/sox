@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net"
 	"strconv"
+	"time"
 )
 
 type requestBuilder struct {
@@ -13,6 +14,19 @@ type requestBuilder struct {
 
 func (b *requestBuilder) add(data ...byte) {
 	_, _ = b.Write(data)
+}
+
+func (c *config) readAll(conn net.Conn) (resp []byte, err error) {
+	resp = make([]byte, 1024)
+	if c.Timeout > 0 {
+		if err := conn.SetReadDeadline(time.Now().Add(c.Timeout)); err != nil {
+			return nil, err
+		}
+	}
+
+	n, err := conn.Read(resp)
+	resp = resp[:n]
+	return
 }
 
 func splitHostPort(addr string) (host string, port uint16, err error) {
