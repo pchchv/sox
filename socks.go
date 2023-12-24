@@ -26,6 +26,17 @@ func (cfg *config) dialFunc() func(string, string) (net.Conn, error) {
 	return dialError(fmt.Errorf("unknown SOCKS protocol %v", cfg.Proto))
 }
 
+// Dial returns the dial function to be used in http.Transport object.
+// Argument proxyURI should be in the format: "socks5://user:password@127.0.0.1:1080?timeout=5s".
+// The protocol could be socks5, socks4 and socks4a.
+func Dial(proxyURI string) func(string, string) (net.Conn, error) {
+	cfg, err := parse(proxyURI)
+	if err != nil {
+		return dialError(err)
+	}
+	return cfg.dialFunc()
+}
+
 func dialError(err error) func(string, string) (net.Conn, error) {
 	return func(_, _ string) (net.Conn, error) {
 		return nil, err
