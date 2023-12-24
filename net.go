@@ -11,6 +11,10 @@ type requestBuilder struct {
 	bytes.Buffer
 }
 
+func (b *requestBuilder) add(data ...byte) {
+	_, _ = b.Write(data)
+}
+
 func splitHostPort(addr string) (host string, port uint16, err error) {
 	host, portStr, err := net.SplitHostPort(addr)
 	if err != nil {
