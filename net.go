@@ -29,6 +29,19 @@ func (c *config) readAll(conn net.Conn) (resp []byte, err error) {
 	return
 }
 
+func (c *config) sendReceive(conn net.Conn, req []byte) (resp []byte, err error) {
+	if c.Timeout > 0 {
+		if err := conn.SetWriteDeadline(time.Now().Add(c.Timeout)); err != nil {
+			return nil, err
+		}
+	}
+
+	if _, err = conn.Write(req); err != nil {
+		return
+	}
+	return c.readAll(conn)
+}
+
 func splitHostPort(addr string) (host string, port uint16, err error) {
 	host, portStr, err := net.SplitHostPort(addr)
 	if err != nil {
